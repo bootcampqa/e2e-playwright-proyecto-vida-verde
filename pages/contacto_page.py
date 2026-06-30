@@ -8,7 +8,13 @@ class ContactoPage:
 
     def visitar_contacto(self):
         self.page.goto(self.url)
+    
+    def verificar_titulo(self):
+        expect(self.page.get_by_role("heading", name="Contáctanos")).to_be_visible()
 
+    def verificar_url(self):
+        assert self.page.url == self.url
+        
     def rellenar_nombre(self, nombre):
          self.page.get_by_role("textbox", name="Nombre *").fill(nombre)
 

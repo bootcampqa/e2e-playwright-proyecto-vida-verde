@@ -13,6 +13,9 @@ class ProductosPage:
     def verificar_titulo(self):
         expect(self.page.get_by_role("heading", name="Catálogo de Productos")).to_be_visible()
 
+    def verificar_url(self):
+         assert self.page.url == self.url
+
     def verificar_categoria(self,categoria):
         expect(self.page.get_by_text(categoria).nth(2)).to_be_visible()
 
