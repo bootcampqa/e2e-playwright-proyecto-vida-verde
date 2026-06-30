@@ -33,7 +33,7 @@ jobs:
 
     - name: Run tests on mobile
       run: |
-        pytest --capture=tee-sys --html=resultsmobile.html --self-contained-html --device="" iPhone 12" --video=on
+        pytest --capture=tee-sys --html=resultsmobile.html --self-contained-html --device="iPhone 12" --video=on
 
     - name: Upload Playwright report (Desktop)
       uses: actions/upload-artifact@v4
