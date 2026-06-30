@@ -36,3 +36,6 @@ class ProductosPage:
 
     def filtrar_por_precio_maximo(self, precio_max):
         self.page.get_by_role("spinbutton", name="Precio máximo").fill(precio_max)
+
+    def agregar_producto_al_carrito(self,nombre_producto):
+         self.page.get_by_role("button", name="Añadir "+nombre_producto).click()

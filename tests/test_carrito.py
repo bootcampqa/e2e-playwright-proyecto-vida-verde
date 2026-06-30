@@ -1,68 +1,88 @@
 from playwright.sync_api import Page, expect
+from pages.carrito_page import CarritoPage
+from pages.components.menu import MenuComponent
+from pages.productos_page import ProductosPage
+
 
 def test_carrito(page: Page):
+
+    productos_page = ProductosPage(page)
+    carrito_page = CarritoPage(page)
+    menu_component = MenuComponent(page)
+
     print("Given el usuario abre la página de productos")
-    page.goto("https://web-qa.dev.adalab.es/products")
+    productos_page.visitar_productos()
+    
 
     print("When filtra por producto 'Regadera'")
-    page.get_by_role("searchbox", name="Nombre").fill("regadera")
+    productos_page.filtrar_por_nombre("regadera")
+    
 
     print("And agrega el producto al carrito")
-    page.get_by_role("button", name="Añadir Regadera Metálica").click()
+    productos_page.agregar_producto_al_carrito("Regadera Metálica")
 
     print("And filtra por producto 'Tijeras'")
-    page.get_by_role("searchbox", name="Nombre").fill("tijeras")
-   
+    productos_page.filtrar_por_nombre("tijeras")
+  
 
     print("And agrega el producto al carrito")
-    page.get_by_role("button", name="Añadir Tijeras de Podar").click()
+    productos_page.agregar_producto_al_carrito("Tijeras de Podar")
+
 
     print("When visita el carrito")
-    page.get_by_role("link", name="Carrito de compra").click()
+    menu_component.clic_carrito_compra()
 
     print("Then debe ver el producto Regadera y su precio")
-    expect(page.get_by_role("heading", name="Regadera Metálica")).to_be_visible()
-    expect(page.get_by_text("24.00 €")).to_be_visible()
+    carrito_page.verificar_producto_carrito("Regadera Metálica")
+    carrito_page.verificar_precio_carrito("24.00 €")
+    
+  
 
     print("And debe ver el producto Tijeras y su precio")
-    expect(page.get_by_role("heading", name="Tijeras de Podar")).to_be_visible()
-    expect(page.get_by_text("18.50 €")).to_be_visible()
+    carrito_page.verificar_producto_carrito("Tijeras de Podar")
+    carrito_page.verificar_precio_carrito("18.50 €")
 
     print("And debe ver el resumen del pedido:")
     print("Subtotal:")
-    expect(page.get_by_text("42.50 €")).to_be_visible()
+    carrito_page.verificar_precio_carrito("42.50 €")
+
     print("IVA 21%")
-    expect(page.get_by_text("8.92 €")).to_be_visible()
+    carrito_page.verificar_precio_carrito("8.92 €")
+  
     print("Envío")
-    expect(page.get_by_text("5.00 €")).to_be_visible()
+    carrito_page.verificar_precio_carrito("5.00 €")
     print("Total")
-    expect(page.get_by_text("56.42 €")).to_be_visible()
+    carrito_page.verificar_precio_carrito("56.42 €")
+
 
     print("When elimina el producto Regadera")
-    page.get_by_role("button", name="Eliminar Regadera Metálica").click()
+    carrito_page.eliminar_producto_carrito("Regadera Metálica")
 
     print("Then no debe ver el producto Regadera")
-    expect(page.get_by_role("heading", name="Regadera Metálica")).not_to_be_visible()
+    carrito_page.verificar_producto_eliminado_carrito("Regadera Metálica")
 
 
     print("And ve resumen del pedido actualizado")
     print("Subtotal")
-    expect(page.get_by_label("Resumen del Pedido").get_by_text("18.50 €")).to_be_visible()
+    carrito_page.verificar_precio_carrito("18.50 €")
     print("IVA 21%")
-    expect(page.get_by_text("3.88 €")).to_be_visible()
+    carrito_page.verificar_precio_carrito("3.88 €")
+    
     print("Envío")
-    expect(page.get_by_text("5.00 €")).to_be_visible()
+    carrito_page.verificar_precio_carrito("5.00 €")
     print("total")
-    expect(page.get_by_text("27.38 €")).to_be_visible()
+    carrito_page.verificar_precio_carrito("27.38 €")
 
     print("When vacía el carrito")
-    page.get_by_role("button", name="Vaciar Carrito").click()
+    carrito_page.vaciar_carrito()
+    
 
     print("Then debe ver mensaje carrito vacío")
-    expect(page.get_by_text("Tu carrito está vacío")).to_be_visible()
+    carrito_page.verificar_carrito_vacio()
 
     print("And hace clic en Ver Productos")
-    page.get_by_role("link", name="Ver Productos").click()
+    carrito_page.ver_productos()
 
     print("Then debe ver la página de productos")
-    expect(page.get_by_role("heading", name="Catálogo de Productos")).to_be_visible()
+    productos_page.verificar_titulo()
+   
