@@ -103,72 +103,77 @@ def test_realizar_compra_datos_validos(page: Page):
 
 
 def test_realizar_compra_con_tarjeta_invalida(page: Page):
-    print("Given la usuaria esta en la página de productos 'https://web-qa.dev.adalab.es/products'")
-    page.goto("https://web-qa.dev.adalab.es/products")
+    productos_page = ProductosPage(page)
+    menu_component = MenuComponent(page)
+    carrito_page = CarritoPage(page)
+    checkout_page = CheckoutPage(page)
 
-    print("and filtra por nombre 'Palas'")
-    page.get_by_role("searchbox", name="Nombre").fill("palas")
+    print("Given la usuaria esta en la página de productos 'https://web-qa.dev.adalab.es/products'")
+    productos_page.visitar_productos()
+
+    print("and filtra por nombre 'palas'")
+    productos_page.filtrar_por_nombre("palas")
 
     print("and añade el producto al carrito")
-    page.get_by_role("button", name="Añadir Juego de Palas").click()
+    productos_page.agregar_producto_al_carrito("Juego de Palas")
 
-    print("and hace clic en 'Finalizar Compra'")
-    page.get_by_role("link", name="Finalizar Compra").click()
+    print("and hace clic en finalizar compra")
+    menu_component.clic_finalizar_compra()
 
-    print("and hace clic en 'Proceder al Pago'")
-    page.get_by_role("link", name="Proceder al Pago").click()
+    print("and hace clic en 'Proceder al pago'")
+    carrito_page.proceder_al_pago()
 
     print("When rellena el formulario con el nombre 'Elena Nito del Bosque'")
-    page.get_by_role(
-        "textbox", name="Nombre Completo *").fill("Elena Nito del Bosque")
+    checkout_page.rellenar_nombre("Elena Nito del Bosque")
 
     print("and rellena el email 'test@gmail.com'")
-    page.get_by_role("textbox", name="Email *").fill("test@gmail.com")
+    checkout_page.rellenar_email("test@gmail.com")
 
     print("and rellena la dirección 'Calle del Árbol, 8, Burgos'")
-    page.get_by_role(
-        "textbox", name="Dirección *").fill("Calle del Árbol, 8, Burgos")
+    checkout_page.rellenar_direccion("Calle del Árbol, 8, Burgos")
 
     print("and rellena la tarjeta inválida '1234'")
-    page.get_by_role(
-        "textbox", name="Número de Tarjeta de Crédito *").fill("1234")
+    checkout_page.rellenar_tarjeta("1234")
 
     print("and hace clic en Completar Compra")
-    page.get_by_role("button", name="Completar compra").click()
+    checkout_page.completar_compra()
 
     print("then debe ver un mensaje de error numero de tarjeta invalido")
-    expect(page.get_by_text("El número de tarjeta debe")).to_be_visible()
+    checkout_page.verificar_error_tarjeta_invalida()
 
 
 def test_realizar_compra_con_tarjeta_vacia(page: Page):
-    print("Given la usuaria esta en la página de productos 'https://web-qa.dev.adalab.es/products'")
-    page.goto("https://web-qa.dev.adalab.es/products")
+    productos_page = ProductosPage(page)
+    menu_component = MenuComponent(page)
+    carrito_page = CarritoPage(page)
+    checkout_page = CheckoutPage(page)
 
-    print("and filtra por nombre 'Palas'")
-    page.get_by_role("searchbox", name="Nombre").fill("Palas")
+    print("Given la usuaria esta en la página de productos 'https://web-qa.dev.adalab.es/products'")
+    productos_page.visitar_productos()
+
+    print("and filtra por nombre 'palas'")
+    productos_page.filtrar_por_nombre("palas")
 
     print("and añade el producto al carrito")
-    page.get_by_role("button", name="Añadir juego de Palas al carrito").click()
+    productos_page.agregar_producto_al_carrito("Juego de Palas")
 
-    print("and hace clic en ‘Finalizar Compra’")
-    page.get_by_role("link", name="Finalizar Compra").click()
+    print("and hace clic en finalizar compra")
+    menu_component.clic_finalizar_compra()
 
-    print("and hace clic en ‘Proceder al Pago’")
-    page.get_by_role("link", name="Proceder al Pago").click()
+    print("and hace clic en 'Proceder al pago'")
+    carrito_page.proceder_al_pago()
 
-    print("When rellena el formulario con el nombre ‘Elena Nito del Bosque’")
-    page.get_by_role(
-        "textbox", name="Nombre Completo *").fill("Elena nito del Bosque")
+    print("When rellena el formulario con el nombre 'Elena Nito del Bosque'")
+    checkout_page.rellenar_nombre("Elena Nito del Bosque")
 
-    print("and rellena el email ‘test@gmail.com’")
-    page.get_by_role("textbox", name="Email *").fill("test@gamil.com")
+    print("and rellena el email 'test@gmail.com'")
+    checkout_page.rellenar_email("test@gmail.com")
 
-    print("and rellena la dirección ‘Calle del Árbol., 8, Burgos’")
-    page.get_by_role(
-        "textbox", name="Dirección *").fill("Calle del Árbol., 8, Burgo")
+    print("and rellena la dirección 'Calle del Árbol, 8, Burgos'")
+    checkout_page.rellenar_direccion("Calle del Árbol, 8, Burgos")
 
-    print("and hace clic en ‘Completar Compra’")
-    page.get_by_role("button", name="Completar Compra").click()
+    print("and hace clic en Completar Compra")
+    checkout_page.completar_compra()
 
     print("then NO debe ver el mensaje 'Compra realizada con éxito'")
-    expect(page.get_by_text("Compra realizada con éxito")).not_to_be_visible()
+    checkout_page.verificar_no_mensaje_compra_exito()

@@ -41,3 +41,9 @@ class CheckoutPage:
 
     def completar_compra(self):
         self.page.get_by_role("button", name="Completar Compra").click()
+
+    def verificar_error_tarjeta_invalida(self):
+        expect(self.page.get_by_text("El número de tarjeta debe")).to_be_visible()
+
+    def verificar_no_mensaje_compra_exito(self):
+        expect(self.page.get_by_text("Compra realizada con éxito")).not_to_be_visible()
