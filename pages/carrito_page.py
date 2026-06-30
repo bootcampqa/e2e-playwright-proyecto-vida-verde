@@ -26,3 +26,6 @@ class CarritoPage:
 
     def ver_productos(self):
          self.page.get_by_role("link", name="Ver Productos").click()
+
+    def proceder_al_pago(self):
+         self.page.get_by_role("link", name="Proceder al Pago").click()
