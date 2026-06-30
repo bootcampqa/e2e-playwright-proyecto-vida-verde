@@ -18,7 +18,7 @@ def test_visit(page: Page):
     inicio_page.visitar_inicio()
 
     print("When they visit the menu “About us”")
-    menu_component.clic_menu("Quienes Somos")
+    menu_component.clic_menu("Quiénes Somos")
    
     print("And they should see the title “About Us”")
     quienes_somos_page.verificar_titulo()
